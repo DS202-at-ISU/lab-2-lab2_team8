@@ -27,11 +27,10 @@ library(classdata)
 ```{r, echo=FALSE}
 ames %>% str()
 ames['Bedrooms']
-bedrooms <- ames['Bedrooms']
 ggplot(ames, aes(Bedrooms))+
   geom_bar()
 ```
-
+There are a lot 2-5 bedroom houses
 
 
 
