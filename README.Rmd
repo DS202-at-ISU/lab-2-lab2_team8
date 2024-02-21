@@ -25,9 +25,16 @@ library(classdata)
 ```
 
 ```{r, echo=FALSE}
-ames %>% str()
+ames['Bedrooms']
+bedrooms <- ames['Bedrooms']
+ggplot(ames, aes(Bedrooms))+
+  geom_bar()
 ```
 
+```{r, echo=FALSE}
+ames %>% filter(`Sale Price` <= 1000000, `Sale Price` > 0) %>%
+  ggplot(aes(x=`Sale Price`, fill=`FirePlace`)) + geom_histogram(binwidth=50000)
+```
 
 
 
