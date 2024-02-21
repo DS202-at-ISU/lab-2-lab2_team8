@@ -1,4 +1,5 @@
 ---
+name: "DS202 Lab 2 Team 8"
 output: github_document
 ---
 
