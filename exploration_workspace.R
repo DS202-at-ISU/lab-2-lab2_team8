@@ -24,5 +24,19 @@ dim(ames)
 # FirePlace: IMPORTANT, CATEGORICAL
 # Neighborhood: IMPORTANT, CATEGORICAL
 
-# "AC", "FirePlace", and "Multi Sale" are chr type
+# "AC", "FirePlace", "Bedrooms", and "Multi Sale" are chr type
 # Consider using factor() to convert them to categorical
+
+# plotting bar charts for CATEGORICAL to see if anything interesting pops up
+ggplot(data = ames, aes(Style)) + geom_bar() + coord_flip()
+ggplot(data = ames, aes(Occupancy)) + geom_bar()
+# multi_sale <- factor(ames$`Multi Sale`, exclude = NULL)
+ggplot(data = ames, aes(factor(`Multi Sale`, exclude = NULL))) + geom_bar()
+ggplot(data = ames, aes(factor(Bedrooms, exclude = 0))) + geom_bar() # use filter for removing NA values
+ggplot(data = ames, aes(factor(AC, exclude = NULL))) + geom_bar()
+ggplot(data = ames, aes(factor(FirePlace, exclude = NULL))) + geom_bar()
+ggplot(data = ames, aes(Neighborhood)) + geom_bar() + coord_flip()
+
+
+
+
