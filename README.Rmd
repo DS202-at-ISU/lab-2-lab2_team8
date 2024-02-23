@@ -19,22 +19,24 @@ Include your answers in this document (Rmd file). Make sure that it knits proper
 All submissions to the github repo will be automatically uploaded for grading once the due date is passed.
 Submit a link to your repository on Canvas (only one submission per team) to signal to the instructors that you are done with your submission.
 
-```{r, echo=FALSE, message=FALSE}
+```{r echo=FALSE, message=FALSE}
 library(tidyverse)
 library(classdata)
 ```
 
 ```{r, echo=FALSE}
 ames['Bedrooms']
-bedrooms <- ames['Bedrooms']
 ggplot(ames, aes(Bedrooms))+
   geom_bar()
 ```
+<<<<<<< HEAD
+There are a lot 2-5 bedroom houses
 
 ```{r, echo=FALSE}
 ames %>% filter(`Sale Price` <= 1000000, `Sale Price` > 0) %>%
   ggplot(aes(x=`Sale Price`, fill=`FirePlace`)) + geom_histogram(binwidth=50000)
 ```
+>>>>>>> dcc921aafe5f937a2d470b66da60519b39b91d80
 
 
 
