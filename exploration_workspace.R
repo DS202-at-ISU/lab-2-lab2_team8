@@ -35,11 +35,13 @@ ggplot(data = filter(ames, !is.na(Style)), aes(Style)) + geom_bar() + coord_flip
 
 ggplot(data = ames, aes(Occupancy)) + geom_bar()
 
-#ggplot(data = ames, aes(factor(`Multi Sale`, exclude = NULL))) + geom_bar()
+#ggplot(data = ames, aes(factor(`Multi Sale`))) + geom_bar()
 # for some reason, this ^ guy doesn't always work on first try.
 # Also, creates NA as a category when works
 # try filter
+ggplot(data = filter(ames, !is.na(`Multi Sale`)), aes(factor(`Multi Sale`))) + geom_bar()
 ggplot(data = filter(ames, !is.na(`Multi Sale`)), aes(`Multi Sale`)) + geom_bar()
+# no difference between 2 above cuz only Y, no N
 
 ggplot(data = ames, aes(factor(Bedrooms))) + geom_bar()
 # Has 0 bedrooms and NA as category so use filter for removing NA values

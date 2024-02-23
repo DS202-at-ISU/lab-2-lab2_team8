@@ -30,7 +30,7 @@ ggplot(ames, aes(Bedrooms))+
   geom_bar()
 ```
 
-There are a lot 2-5 bedroom houses
+There are a lot of 2-5 bedroom houses
 
 ```{r, echo=FALSE}
 ames %>% filter(`Sale Price` <= 1000000, `Sale Price` > 0) %>%
