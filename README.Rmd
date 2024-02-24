@@ -28,6 +28,7 @@ library(classdata)
 ames['Bedrooms']
 ggplot(ames, aes(Bedrooms))+
   geom_bar()
+ggplot(ames, aes(x=`Bedrooms`, y=`Sale Price`)) + geom_point()
 ```
 
 There are a lot of 2-5 bedroom houses
