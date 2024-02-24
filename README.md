@@ -17,12 +17,15 @@ grading once the due date is passed. Submit a link to your repository on
 Canvas (only one submission per team) to signal to the instructors that
 you are done with your submission.
 
+<<<<<<< HEAD
     ## Warning: package 'ggplot2' was built under R version 4.2.3
 
     ## Warning: package 'tibble' was built under R version 4.2.3
 
     ## Warning: package 'dplyr' was built under R version 4.2.3
 
+=======
+>>>>>>> 542dc1d195d3e0e07267b198a4339a3dd7532137
     ## # A tibble: 6,935 × 1
     ##    Bedrooms
     ##       <dbl>
@@ -41,7 +44,14 @@ you are done with your submission.
     ## Warning: Removed 447 rows containing non-finite values (`stat_count()`).
 
 ![](README_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+<<<<<<< HEAD
 \<\<\<\<\<\<\< HEAD There are a lot 2-5 bedroom houses
 
 ![](README_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 \>\>\>\>\>\>\> dcc921aafe5f937a2d470b66da60519b39b91d80
+=======
+
+There are a lot of 2-5 bedroom houses
+
+![](README_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+>>>>>>> 542dc1d195d3e0e07267b198a4339a3dd7532137

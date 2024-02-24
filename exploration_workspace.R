@@ -28,13 +28,35 @@ dim(ames)
 # Consider using factor() to convert them to categorical
 
 # plotting bar charts for CATEGORICAL to see if anything interesting pops up
+
 ggplot(data = ames, aes(Style)) + geom_bar() + coord_flip()
+# Has NA as a category so try filter
+ggplot(data = filter(ames, !is.na(Style)), aes(Style)) + geom_bar() + coord_flip()
+
 ggplot(data = ames, aes(Occupancy)) + geom_bar()
-# multi_sale <- factor(ames$`Multi Sale`, exclude = NULL)
-ggplot(data = ames, aes(factor(`Multi Sale`, exclude = NULL))) + geom_bar()
-ggplot(data = ames, aes(factor(Bedrooms, exclude = 0))) + geom_bar() # use filter for removing NA values
-ggplot(data = ames, aes(factor(AC, exclude = NULL))) + geom_bar()
-ggplot(data = ames, aes(factor(FirePlace, exclude = NULL))) + geom_bar()
+
+#ggplot(data = ames, aes(factor(`Multi Sale`))) + geom_bar()
+# for some reason, this ^ guy doesn't always work on first try.
+# Also, creates NA as a category when works
+# try filter
+ggplot(data = filter(ames, !is.na(`Multi Sale`)), aes(factor(`Multi Sale`))) + geom_bar()
+ggplot(data = filter(ames, !is.na(`Multi Sale`)), aes(`Multi Sale`)) + geom_bar()
+# no difference between 2 above cuz only Y, no N
+
+ggplot(data = ames, aes(factor(Bedrooms))) + geom_bar()
+# Has 0 bedrooms and NA as category so use filter for removing NA values
+# You may consider excluding 0 because 0 bedrooms might not make sense
+ggplot(data = filter(ames, !is.na(Bedrooms)), aes(factor(Bedrooms))) + geom_bar()
+ggplot(data = filter(ames, !is.na(Bedrooms)), aes(factor(Bedrooms, exclude = 0))) + geom_bar()
+
+ggplot(data = ames, aes(factor(AC))) + geom_bar()
+# I dont think AC has NA, use below if has NA
+#ggplot(data = filter(ames, !is.na(AC)), aes(factor(AC))) + geom_bar()
+
+ggplot(data = ames, aes(factor(FirePlace))) + geom_bar()
+# I dont think FirePlace has NA, use below if has NA
+# ggplot(data = filter(ames, !is.na(FirePlace)), aes(factor(FirePlace))) + geom_bar()
+
 ggplot(data = ames, aes(Neighborhood)) + geom_bar() + coord_flip()
 
 
