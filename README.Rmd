@@ -19,10 +19,41 @@ Include your answers in this document (Rmd file). Make sure that it knits proper
 All submissions to the github repo will be automatically uploaded for grading once the due date is passed.
 Submit a link to your repository on Canvas (only one submission per team) to signal to the instructors that you are done with your submission.
 
-```{r echo=FALSE, message=FALSE}
+TL;DR
+
+```{r, echo=FALSE, message=FALSE}
 library(tidyverse)
+library(ggplot2)
 library(classdata)
+
+dim(ames)
+str(ames)
 ```
+
+## Types of Data
+There are 16 columns with variables:
+
+- Parcel ID: Useless, just an identifier
+- Address: Kinda Useless
+- Style: IMPORTANT, CATEGORICAL
+- Occupancy: IMPORTANT, CATEGORICAL
+- Sale Date: Maybe important for time series analysis. most likely QUANTITATIVE
+- Sale Price: IMPORTANT, QUANTITATIVE (MAIN VARIABLE); RANGE: $0 - $22,000,000
+- Multi Sale: CATEGORICAL (mostly NAs, watch out!) Useless in my opinion
+- YearBuilt: Important for time series analysis. Most likely QUANTITATIVE; RANGE: 0 - 2022
+- Acres: IMPORTANT, QUANTITATIVE; RANGE: 0 - 12.012
+- TotalLivingArea (sf): IMPORTANT, QUANTITATIVE; RANGE: 0 - 6007
+- Bedrooms: IMPORTANT, CATEGORICAL
+- FinishedBsmtArea (sf): IMPORTANT, QUANTITATIVE; RANGE: 10 - 6496
+- LotArea(sf): IMPORTANT, QUANTITATIVE; RANGE: 0 - 523228
+- AC: IMPORTANT, CATEGORICAL
+- FirePlace: IMPORTANT, CATEGORICAL
+- Neighborhood: IMPORTANT, CATEGORICAL
+
+**NOTE:**
+- Most of the plots won't be done for max range of values because they might heavily skew the plots
+- See [detailed visualization file](exploration_workspace.R) for all the various trends.\
+We picked couple important ones for this document.
 
 ```{r, echo=FALSE}
 ames['Bedrooms']
@@ -38,6 +69,97 @@ ames %>% filter(`Sale Price` <= 1000000, `Sale Price` > 0) %>%
   ggplot(aes(x=`Sale Price`, fill=`FirePlace`)) + geom_histogram(binwidth=50000)
 ```
 
+### Boxplots for `Sale Price`
 
+Let's analyze boxplots of `Sale Price` for various types
 
+#### By `Bedrooms`
 
+```{r, message=FALSE, echo=FALSE}
+# clean data
+ames_clean_Style <- filter(ames, !is.na(Style))
+ames_clean_Occupancy <- filter(ames, !is.na(Occupancy))
+ames_clean_Bedrooms <- filter(ames, !is.na(Bedrooms) & Bedrooms != 0)
+ames_clean_Neighborhood <- filter(ames, Neighborhood != "(0) None")
+
+ggplot(data = filter(ames_clean_Bedrooms, `Sale Price` > 10000 & `Sale Price` <= 1000000), aes(`Sale Price`, y = factor(Bedrooms))) + geom_boxplot()
+
+```
+
+As you can see, the higher the bedrooms, the higher the sale price
+
+#### By `Style`
+
+```{r, message=FALSE, echo=FALSE}
+ggplot(data = filter(ames_clean_Style, `Sale Price` > 10000 & `Sale Price` <= 1000000), aes(`Sale Price`, y = Style)) + geom_boxplot()
+```
+
+As you can see, 2 Story Frame has no outliers (every other type has outliers). It also has the highest IQR, possibly lots of variety in such houses for people to buy.
+
+1 Story Frame has the highest range, however, most of the houses bought lie around $150,000 to $300,000
+
+### Useful scatterplots and line plots
+
+Let's now see some quantitative VS quantitative action
+
+```{r, message=FALSE, echo=FALSE}
+# clean data
+ames_clean_scatterplot <- filter(ames, `Sale Price` > 10000 & `Sale Price` <= 1000000
+                                     , !is.na(YearBuilt) & YearBuilt > 1850
+                                     , !is.na(Acres) & Acres > 0 & Acres < 5
+                                     , `TotalLivingArea (sf)` > 25 & `TotalLivingArea (sf)` < 3000
+                                     , `FinishedBsmtArea (sf)` < 2000
+                                     , !is.na(`LotArea(sf)`) & `LotArea(sf)` > 100 & `LotArea(sf)` < 15000
+                                     , !is.na(Style) & !is.na(Occupancy) & !is.na(Bedrooms) & Bedrooms != 0 & Neighborhood != "(0) None")
+```
+
+#### Let's see `YearBuilt` VS `Sale Price`
+
+```{r, message=FALSE, echo=FALSE}
+ggplot(data = ames_clean_scatterplot, aes(x = YearBuilt, y = `Sale Price`)) + geom_point()
+```
+
+We see that overall trend seems to rise rapidly as we approach the 21st century.
+
+We also see that there are some very cheap houses in the 21st century, maybe government offered good programs or there was a housing market crash.
+
+Let's also see the trend more clearly by looking at average price per year
+
+```{r, message=FALSE, echo=FALSE}
+ames_clean_scatterplot %>%
+  group_by(YearBuilt) %>%
+  summarise(avg_sale_price = mean(`Sale Price`)) %>%
+  ggplot(aes(x = YearBuilt, y = avg_sale_price)) + geom_line()
+```
+
+The rising trend near the 21th century is much more apparent now.
+
+Let's also see how sale price varied for say, `Occupancy`
+
+```{r, message=FALSE, echo=FALSE}
+ames_clean_scatterplot %>%
+  group_by(YearBuilt, Occupancy) %>%
+  summarise(avg_sale_price = mean(`Sale Price`)) %>%
+  ggplot(aes(x = YearBuilt, y = avg_sale_price, color = Occupancy)) + geom_line()
+```
+
+Townhouse trend started after 1960s. All types exhibit rising trend, however, two family duplex was expensive around 1920s but fell off later, rose a little bit but relatively stable.
+
+#### Let's see `LotArea(sf)` VS `Sale Price`
+
+Let's also throw in a category `Occupancy` while we're at it
+
+```{r, message=FALSE, echo=FALSE}
+ames_clean_scatterplot %>%
+  group_by(Occupancy, `LotArea(sf)`) %>%
+  summarise(avg_sale_price = mean(`Sale Price`)) %>%
+  ggplot(aes(x = `LotArea(sf)`, y = avg_sale_price, color = Occupancy)) + geom_point()
+```
+
+We notice interesting patterns.
+
+Townhouses usually have a smaller area but price rises rapidly as area increases.
+
+Two Family conversion has a slight increase with area.
+
+Single family/owner occupied is clearly the most popular and is usually larger area than townhouses and has wide price range.
