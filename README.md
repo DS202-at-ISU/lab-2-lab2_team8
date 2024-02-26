@@ -66,8 +66,11 @@ There are 16 columns with variables:
 
 **NOTE:** - Most of the plots won’t be done for max range of values
 because they might heavily skew the plots - See [detailed visualization
-file](exploration_workspace.R) for all the various trends.  
-We picked couple important ones for this document.
+file called exploration\_workspace.R in our
+repo](exploration_workspace.R) for all the various trends.  
+We picked couple important ones for this document.  
+DO NOT CLICK THE LINK FROM HTML AFTER KNITTING, THE LINK ONLY WORKS FOR
+README.md ON GITHUB
 
     ## # A tibble: 6,935 × 1
     ##    Bedrooms
