@@ -111,12 +111,30 @@ ames_clean_Neighborhood <- filter(ames, Neighborhood != "(0) None")
 
 ggplot(data = ames, aes(`Sale Date`)) + geom_boxplot()
 
-ggplot(data = filter(ames_clean_Style, `Sale Price` > 10000 & `Sale Price` <= 1000000), aes(`Sale Price`)) + geom_boxplot() + facet_wrap(~Style)
-ggplot(data = filter(ames_clean_Occupancy, `Sale Price` > 10000 & `Sale Price` <= 1000000), aes(`Sale Price`)) + geom_boxplot() + facet_wrap(~Occupancy)
-ggplot(data = filter(ames_clean_Bedrooms, `Sale Price` > 10000 & `Sale Price` <= 1000000), aes(`Sale Price`)) + geom_boxplot() + facet_wrap(~factor(Bedrooms))
-ggplot(data = filter(ames, `Sale Price` > 10000 & `Sale Price` <= 1000000), aes(`Sale Price`)) + geom_boxplot() + facet_wrap(~factor(AC))
-ggplot(data = filter(ames, `Sale Price` > 10000 & `Sale Price` <= 1000000), aes(`Sale Price`)) + geom_boxplot() + facet_wrap(~factor(FirePlace))
-ggplot(data = filter(ames_clean_Neighborhood, `Sale Price` > 10000 & `Sale Price` <= 1000000), aes(`Sale Price`)) + geom_boxplot() + facet_wrap(~Neighborhood)
+# Sale Price boxplots
+
+# Use below style if wanna have separate graph for each boxplot
+#ggplot(data = filter(ames_clean_Style, `Sale Price` > 10000 & `Sale Price` <= 1000000), aes(`Sale Price`)) + geom_boxplot() + facet_wrap(~Style)
+# Use below style if wanna have all boxplots for various categories in 1 graph
+ggplot(data = filter(ames_clean_Style, `Sale Price` > 10000 & `Sale Price` <= 1000000), aes(`Sale Price`, y = Style)) + geom_boxplot()#GOOD
+
+#ggplot(data = filter(ames_clean_Occupancy, `Sale Price` > 10000 & `Sale Price` <= 1000000), aes(`Sale Price`)) + geom_boxplot() + facet_wrap(~Occupancy)
+ggplot(data = filter(ames_clean_Occupancy, `Sale Price` > 10000 & `Sale Price` <= 1000000), aes(`Sale Price`, y = Occupancy)) + geom_boxplot()#GOOD
+
+#ggplot(data = filter(ames_clean_Bedrooms, `Sale Price` > 10000 & `Sale Price` <= 1000000), aes(`Sale Price`)) + geom_boxplot() + facet_wrap(~factor(Bedrooms))
+ggplot(data = filter(ames_clean_Bedrooms, `Sale Price` > 10000 & `Sale Price` <= 1000000), aes(`Sale Price`, y = factor(Bedrooms))) + geom_boxplot()#GOOD
+
+#ggplot(data = filter(ames, `Sale Price` > 10000 & `Sale Price` <= 1000000), aes(`Sale Price`)) + geom_boxplot() + facet_wrap(~factor(AC))
+ggplot(data = filter(ames, `Sale Price` > 10000 & `Sale Price` <= 1000000), aes(`Sale Price`, y = factor(AC))) + geom_boxplot()
+
+#ggplot(data = filter(ames, `Sale Price` > 10000 & `Sale Price` <= 1000000), aes(`Sale Price`)) + geom_boxplot() + facet_wrap(~factor(FirePlace))
+ggplot(data = filter(ames, `Sale Price` > 10000 & `Sale Price` <= 1000000), aes(`Sale Price`, y = factor(FirePlace))) + geom_boxplot()
+
+#ggplot(data = filter(ames_clean_Neighborhood, `Sale Price` > 10000 & `Sale Price` <= 1000000), aes(`Sale Price`)) + geom_boxplot() + facet_wrap(~Neighborhood)
+#ggplot(data = filter(ames_clean_Neighborhood, `Sale Price` > 10000 & `Sale Price` <= 1000000), aes(`Sale Price`, x = Neighborhood)) + geom_boxplot()
+ggplot(data = filter(ames_clean_Neighborhood, `Sale Price` > 10000 & `Sale Price` <= 1000000), aes(`Sale Price`, y = Neighborhood)) + geom_boxplot()#GOOD
+
+# Other boxplots
 
 ggplot(data = filter(ames, !is.na(YearBuilt) & YearBuilt > 1850), aes(YearBuilt)) + geom_boxplot()
 
@@ -206,11 +224,11 @@ ames_clean_scatterplot <- filter(ames, `Sale Price` > 10000 & `Sale Price` <= 10
                                      , !is.na(YearBuilt) & YearBuilt > 1850
                                      , !is.na(Acres) & Acres > 0 & Acres < 5
                                      , `TotalLivingArea (sf)` > 25 & `TotalLivingArea (sf)` < 3000
-                                     #, `FinishedBsmtArea (sf)` < 2000
-                                     , !is.na(`LotArea(sf)`) #& `LotArea(sf)` > 100 & `LotArea(sf)` < 15000
+                                     , `FinishedBsmtArea (sf)` < 2000
+                                     , !is.na(`LotArea(sf)`) & `LotArea(sf)` > 100 & `LotArea(sf)` < 15000
                                      , !is.na(Style) & !is.na(Occupancy) & !is.na(Bedrooms) & Bedrooms != 0 & Neighborhood != "(0) None")
 
-ggplot(data = ames_clean_scatterplot, aes(x = YearBuilt, y = `Sale Price`)) + geom_point()
+ggplot(data = ames_clean_scatterplot, aes(x = YearBuilt, y = `Sale Price`)) + geom_point()#GOOD
 
 ggplot(data = ames_clean_scatterplot, aes(x = Acres, y = `Sale Price`)) + geom_point()
 
@@ -220,4 +238,47 @@ ggplot(data = ames_clean_scatterplot, aes(x = `FinishedBsmtArea (sf)`, y = `Sale
 
 ggplot(data = ames_clean_scatterplot, aes(x = `LotArea(sf)`, y = `Sale Price`)) + geom_point()
 
+# Let's look at YearBuilt VS Sale Price in detail
+# We can try to plot average sale price in that year
+# on Mac, cmd + shift + m is the shortcut for pipe operator
+
+ames_clean_scatterplot %>%
+  group_by(YearBuilt) %>%
+  summarise(avg_sale_price = mean(`Sale Price`)) %>%
+  ggplot(aes(x = YearBuilt, y = avg_sale_price)) + geom_line()#GOOD
+
+# now let's see for some categories
+ames_clean_scatterplot %>%
+  group_by(YearBuilt, Occupancy) %>%
+  summarise(avg_sale_price = mean(`Sale Price`)) %>%
+  ggplot(aes(x = YearBuilt, y = avg_sale_price, color = Occupancy)) + geom_line()#GOOD
+
+# Let's see categorical fills for other QUANTITATIVE vars
+# Acres VS Sale Price
+ggplot(data = ames_clean_scatterplot, aes(x = Acres, y = `Sale Price`, color = Style)) + geom_point()
+ggplot(data = ames_clean_scatterplot, aes(x = Acres, y = `Sale Price`, color = Occupancy)) + geom_point()#GOOD
+
+# TotalLivingArea (sf) VS Sale Price
+ggplot(data = ames_clean_scatterplot, aes(x = `TotalLivingArea (sf)`, y = `Sale Price`, color = Style)) + geom_point()
+
+ames_clean_scatterplot %>%
+  group_by(Style, `TotalLivingArea (sf)`) %>%
+  summarise(avg_sale_price = mean(`Sale Price`)) %>%
+  ggplot(aes(x = `TotalLivingArea (sf)`, y = avg_sale_price, color = Style)) + geom_point()#GOOD
+
+ames_clean_scatterplot %>%
+  group_by(Occupancy, `TotalLivingArea (sf)`) %>%
+  summarise(avg_sale_price = mean(`Sale Price`)) %>%
+  ggplot(aes(x = `TotalLivingArea (sf)`, y = avg_sale_price, color = Occupancy)) + geom_point()#GOOD
+
+# LotArea(sf) VS Sale Price
+ames_clean_scatterplot %>%
+  group_by(Style, `LotArea(sf)`) %>%
+  summarise(avg_sale_price = mean(`Sale Price`)) %>%
+  ggplot(aes(x = `LotArea(sf)`, y = avg_sale_price, color = Style)) + geom_point()#GOOD
+
+ames_clean_scatterplot %>%
+  group_by(Occupancy, `LotArea(sf)`) %>%
+  summarise(avg_sale_price = mean(`Sale Price`)) %>%
+  ggplot(aes(x = `LotArea(sf)`, y = avg_sale_price, color = Occupancy)) + geom_point()#GOOD
 
