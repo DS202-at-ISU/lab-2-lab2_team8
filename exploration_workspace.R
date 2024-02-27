@@ -282,3 +282,13 @@ ames_clean_scatterplot %>%
   summarise(avg_sale_price = mean(`Sale Price`)) %>%
   ggplot(aes(x = `LotArea(sf)`, y = avg_sale_price, color = Occupancy)) + geom_point()#GOOD
 
+
+
+# Histogram of Sale Price
+ggplot(data = filter(ames, `Sale Price` > 10000 & `Sale Price` <= 1000000), aes(x = `Sale Price`)) +
+  geom_histogram(binwidth = 50000, fill = "blue", color = "black") +
+  theme_minimal() +
+  labs(title = "Distribution of Sale Prices",
+       x = "Sale Price",
+       y = "Frequency")
+
