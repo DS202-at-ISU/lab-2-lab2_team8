@@ -169,3 +169,127 @@ Townhouses usually have a smaller area but price rises rapidly as area increases
 Two Family conversion has a slight increase with area.
 
 Single family/owner occupied is clearly the most popular and is usually larger area than townhouses and has wide price range.
+
+
+#Varun:
+Question 1)
+
+# Display the structure of the Ames dataset
+```{r}
+str(ames)
+```
+Question 2)
+
+I am interested in sale price becuase I believe it is a key variable for real estate analysis.
+```{r}
+# Summary of Sale Price
+summary(ames$`Sale Price`)
+
+```
+
+I believe the numbers show that most houses in Ames sell for around 170,900, which seems like the normal price for a house there. But there are some houses that sold for a lot more, making the average price look really high at 1,017,479. Also, some houses are listed with a sale price of 0, which is strange and might be a mistake or something special about those sales. So, I think if we don't count those unusual 0 and super high prices, we'd get a clearer picture of what most houses really cost in Ames.
+
+
+Question 3) 
+```{r}
+# Histogram for Sale Price
+ggplot(ames, aes(x=`Sale Price`)) +
+  geom_histogram(binwidth = 20000, fill = "steelblue", color = "black") +
+  labs(title = "Histogram of Sale Prices", x = "Sale Price", y = "Frequency") +
+  theme_minimal()
+
+```
+```{r}
+ggplot(ames, aes(x=`Sale Price`)) +
+  geom_histogram(binwidth = 50000, fill = "dodgerblue", color = "black") +
+  xlim(c(0, 1000000)) +  # Limiting x-axis to focus on the common range
+  labs(title = "Distribution of Sale Prices", x = "Sale Price", y = "Count") +
+  theme_minimal()
+
+```
+```{r}
+ggplot(ames, aes(x=`Sale Price`)) +
+  geom_density(fill="salmon", alpha=0.5) +
+  xlim(c(0, 1000000)) +  # Focus on the common price range
+  labs(title = "Density of Sale Prices", x = "Sale Price", y = "Density") +
+  theme_minimal()
+
+```
+```{r}
+ggplot(ames, aes(x=`Sale Price`)) +
+  stat_ecdf(geom = "step", color="steelblue") +
+  xlim(c(0, 1000000)) +  # Focus on the common price range
+  labs(title = "Cumulative Distribution of Sale Prices", x = "Sale Price", y = "Cumulative Frequency") +
+  theme_minimal()
+
+
+```
+
+Main Variable: Sale Price
+Range of Sale Price
+The range of "Sale Price" was already identified in the summary provided earlier, with a minimum of 0 and a maximum of 20,500,000. However, the presence of 0 values suggests some transactions might not represent actual sales.
+
+
+
+```{r}
+# Bar chart for Bedrooms
+ggplot(ames, aes(x=factor(Bedrooms))) +
+  geom_bar(fill = "steelblue", color = "black") +
+  labs(title = "Distribution of Bedrooms", x = "Number of Bedrooms", y = "Count") +
+  theme_minimal()
+```
+
+
+4)
+
+Range of Total Living Area
+```{r}
+summary(ames$`TotalLivingArea (sf)`)
+
+```
+The statistics for the 'TotalLivingArea (sf)' variable in the dataset reveal a broad range, with a minimum of 0 square feet, suggesting possible data errors, and a maximum of 6,007 square feet, indicating a diverse property size spectrum. The first quartile is at 1,095 square feet, the median is 1,460 square feet, and the third quartile is at 1,792 square feet, with an average living area of approximately 1,507 square feet. This average, being higher than the median, hints at a right-skewed distribution with some exceptionally large properties. Additionally, there are 447 entries without recorded living area data, which could impact the analysis and might necessitate data cleaning or imputation.
+
+```{r}
+range(classdata::ames$Bedrooms, na.rm = TRUE)
+
+bar_chart_bedrooms <- ggplot(classdata::ames, aes(x=as.factor(Bedrooms))) +
+  geom_bar(fill="steelblue", color="black", alpha=0.7) +
+  labs(title="Distribution of Number of Bedrooms", x="Number of Bedrooms", y="Frequency") +
+  theme_minimal()
+
+print(bar_chart_bedrooms)
+```
+
+I think there are oddities in the barchart between frequency and number of bedrooms.I believe there are a couple of notable oddities. Firstly, the bar for 0 bedrooms is peculiar, as typically a property would have at least one bedroom; this suggests either a data entry error or a unique type of dwelling that is not meant for typical residence, like a studio. Secondly, there's a bar for 10 bedrooms which is quite unusual for standard homes, indicating that this could be a large multi-family dwelling or a data anomaly. Lastly, the 'NA' category is present, implying that there are properties with unspecified bedroom counts, which could impact the analysis if these entries are significant in number. It might be necessary to investigate these anomalies to ensure accurate data analysis.
+
+
+```{r}
+boxplot_sale_price_vs_bedrooms <- ggplot(classdata::ames, aes(x=as.factor(Bedrooms), y=`Sale Price`)) +
+  geom_boxplot(fill="steelblue", color="black", alpha=0.7) +
+  labs(title="Boxplot of Sale Prices by Number of Bedrooms", x="Number of Bedrooms", y="Sale Price") +
+  theme_minimal()
+
+print(boxplot_sale_price_vs_bedrooms)
+```
+
+The boxplot depicting sale prices by the number of bedrooms shows a wide variation in one-bedroom properties and outliers in several categories, suggesting diverse property types or data inconsistencies. The 'NA' category indicates missing bedroom information, and the presence of a ten-bedroom category could reflect exceptionally large residences. The lack of a clear price trend with increasing bedrooms and the scientific notation on the y-axis suggests a vast range of sale prices.
+
+
+After reviewing all the graphs, it looks like the sale prices of houses vary a lot, especially for homes with just one bedroom. Also, there are some homes with a lot of bedrooms that have prices that are really different from the rest. It's not always true that more bedrooms mean a more expensive house. There's also some information missing for some houses (like how many bedrooms they have), which makes it harder to see clear patterns.
+
+#Fun
+
+```{r}
+ggplot(ames, aes(x=YearBuilt, y=`Sale Price`)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "lm", color = "red") +
+  labs(title = "Sale Price vs. Year Built", x = "Year Built", y = "Sale Price") +
+  theme_minimal()
+
+ggplot(ames, aes(x=Neighborhood, y=`Sale Price`)) +
+  geom_boxplot() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title = "Sale Price by Neighborhood", x = "Neighborhood", y = "Sale Price")
+
+```
+
