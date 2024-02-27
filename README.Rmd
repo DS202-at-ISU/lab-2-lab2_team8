@@ -292,4 +292,5 @@ ggplot(ames, aes(x=Neighborhood, y=`Sale Price`)) +
   labs(title = "Sale Price by Neighborhood", x = "Neighborhood", y = "Sale Price")
 
 ```
+This graph shows how much houses are sold for in different neighborhoods. Most places have homes sold for around the same prices, but there's one neighborhood on the right where houses are much more expensive. This neighborhood also has houses with a big range of prices, from kind of expensive to super expensive. This probably means this is a fancy area.
 
