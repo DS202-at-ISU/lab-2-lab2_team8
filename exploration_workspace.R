@@ -247,6 +247,17 @@ ames_clean_scatterplot %>%
   summarise(avg_sale_price = mean(`Sale Price`)) %>%
   ggplot(aes(x = YearBuilt, y = avg_sale_price)) + geom_line()#GOOD
 
+ames_clean_scatterplot %>%
+  group_by(YearBuilt) %>%
+  summarise(sd_sale_price = sd(`Sale Price`)) %>%
+  ggplot(aes(x = YearBuilt, y = sd_sale_price)) + geom_line()#GOOD
+
+#ames_clean_scatterplot %>%
+#  ggplot(aes(`Sale Price`, y = YearBuilt)) + geom_boxplot() + coord_flip()# this doesn't work cuz yearbuilt not categorical
+
+ames_clean_scatterplot %>%
+  ggplot(aes(`Sale Price`, y = factor(YearBuilt))) + geom_boxplot() + coord_flip()
+
 # now let's see for some categories
 ames_clean_scatterplot %>%
   group_by(YearBuilt, Occupancy) %>%
