@@ -100,7 +100,7 @@ As you can see, the higher the bedrooms, the higher the sale price
 ggplot(data = filter(ames_clean_Style, `Sale Price` > 10000 & `Sale Price` <= 1000000), aes(`Sale Price`, y = Style)) + geom_boxplot()
 ```
 
-As you can see, 2 Story Frame has no outliers (every other type has outliers). It also has the highest IQR, possibly lots of variety in such houses for people to buy.
+As you can see, 2 Story Brick has no outliers (every other type has outliers). It also has the highest IQR, possibly lots of variety in such houses for people to buy.
 
 1 Story Frame has the highest range, however, most of the houses bought lie around $150,000 to $300,000
 

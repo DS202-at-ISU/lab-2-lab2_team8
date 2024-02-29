@@ -49,29 +49,30 @@ library(ggplot2)
 
 There are 16 columns with variables:
 
-- Parcel ID: Useless, just an identifier
-- Address: Kinda Useless
-- Style: IMPORTANT, CATEGORICAL
-- Occupancy: IMPORTANT, CATEGORICAL
-- Sale Date: Maybe important for time series analysis. most likely
-  QUANTITATIVE
-- Sale Price: IMPORTANT, QUANTITATIVE (MAIN VARIABLE); RANGE: \$0 -
-  \$22,000,000
-- Multi Sale: CATEGORICAL (mostly NAs, watch out!) Useless in my opinion
-- YearBuilt: Important for time series analysis. Most likely
-  QUANTITATIVE; RANGE: 0 - 2022
-- Acres: IMPORTANT, QUANTITATIVE; RANGE: 0 - 12.012
-- TotalLivingArea (sf): IMPORTANT, QUANTITATIVE; RANGE: 0 - 6007
-- Bedrooms: IMPORTANT, CATEGORICAL
-- FinishedBsmtArea (sf): IMPORTANT, QUANTITATIVE; RANGE: 10 - 6496
-- LotArea(sf): IMPORTANT, QUANTITATIVE; RANGE: 0 - 523228
-- AC: IMPORTANT, CATEGORICAL
-- FirePlace: IMPORTANT, CATEGORICAL
-- Neighborhood: IMPORTANT, CATEGORICAL
+-   Parcel ID: Useless, just an identifier
+-   Address: Kinda Useless
+-   Style: IMPORTANT, CATEGORICAL
+-   Occupancy: IMPORTANT, CATEGORICAL
+-   Sale Date: Maybe important for time series analysis. most likely
+    QUANTITATIVE
+-   Sale Price: IMPORTANT, QUANTITATIVE (MAIN VARIABLE); RANGE: \$0 -
+    \$22,000,000
+-   Multi Sale: CATEGORICAL (mostly NAs, watch out!) Useless in my
+    opinion
+-   YearBuilt: Important for time series analysis. Most likely
+    QUANTITATIVE; RANGE: 0 - 2022
+-   Acres: IMPORTANT, QUANTITATIVE; RANGE: 0 - 12.012
+-   TotalLivingArea (sf): IMPORTANT, QUANTITATIVE; RANGE: 0 - 6007
+-   Bedrooms: IMPORTANT, CATEGORICAL
+-   FinishedBsmtArea (sf): IMPORTANT, QUANTITATIVE; RANGE: 10 - 6496
+-   LotArea(sf): IMPORTANT, QUANTITATIVE; RANGE: 0 - 523228
+-   AC: IMPORTANT, CATEGORICAL
+-   FirePlace: IMPORTANT, CATEGORICAL
+-   Neighborhood: IMPORTANT, CATEGORICAL
 
 **NOTE:** - Most of the plots won’t be done for max range of values
 because they might heavily skew the plots - See [detailed visualization
-file called exploration_workspace.R in our
+file called exploration\_workspace.R in our
 repo](exploration_workspace.R) for all the various trends.  
 We picked couple important ones for this document.  
 DO NOT CLICK THE LINK FROM HTML AFTER KNITTING, THE LINK ONLY WORKS FOR
@@ -118,7 +119,7 @@ As you can see, the higher the bedrooms, the higher the sale price
 
 ![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
-As you can see, 2 Story Frame has no outliers (every other type has
+As you can see, 2 Story Brick has no outliers (every other type has
 outliers). It also has the highest IQR, possibly lots of variety in such
 houses for people to buy.
 
@@ -284,7 +285,7 @@ ggplot(ames, aes(x=factor(Bedrooms))) +
 
 ![](README_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
 
-4)  
+4.  
 
 Range of Total Living Area
 
