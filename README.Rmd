@@ -296,105 +296,105 @@ This graph shows how much houses are sold for in different neighborhoods. Most p
 
 # MACHINE LEARNING!!!
 
-    ```{r, message=FALSE, echo=FALSE}
-    # Get the data ready 
-    ames_clean <- subset(ames, select = -c(`Parcel ID`, Address, `Sale Date`, `Multi Sale`, `FinishedBsmtArea (sf)`))
-    ames_clean <- filter(ames_clean, `Sale Price` > 100000 & `Sale Price` <= 1000000
-                                 , !is.na(YearBuilt) & YearBuilt > 1850
-                                 , !is.na(Acres) & Acres > 0 & Acres < 5
-                                 , `TotalLivingArea (sf)` > 25 & `TotalLivingArea (sf)` < 3000
-                                 #, `FinishedBsmtArea (sf)` < 2000 # Don't uncomment cuz we deleted this column
-                                 , !is.na(`LotArea(sf)`) & `LotArea(sf)` > 100 & `LotArea(sf)` < 15000
-                                 , !is.na(Style) & !is.na(Occupancy) & !is.na(Bedrooms) & Bedrooms != 0 & Neighborhood != "(0) None")
-    ames_clean$AC <- factor(ames_clean$AC)
-    ames_clean$FirePlace <- factor(ames_clean$FirePlace)
-    ames_clean$Bedrooms <- factor(ames_clean$Bedrooms)
-    ames_test <- ames_clean
-    ```
+```{r, message=FALSE, echo=FALSE}
+# Get the data ready 
+ames_clean <- subset(ames, select = -c(`Parcel ID`, Address, `Sale Date`, `Multi Sale`, `FinishedBsmtArea (sf)`))
+ames_clean <- filter(ames_clean, `Sale Price` > 100000 & `Sale Price` <= 1000000
+                             , !is.na(YearBuilt) & YearBuilt > 1850
+                             , !is.na(Acres) & Acres > 0 & Acres < 5
+                             , `TotalLivingArea (sf)` > 25 & `TotalLivingArea (sf)` < 3000
+                             #, `FinishedBsmtArea (sf)` < 2000 # Don't uncomment cuz we deleted this column
+                             , !is.na(`LotArea(sf)`) & `LotArea(sf)` > 100 & `LotArea(sf)` < 15000
+                             , !is.na(Style) & !is.na(Occupancy) & !is.na(Bedrooms) & Bedrooms != 0 & Neighborhood != "(0) None")
+ames_clean$AC <- factor(ames_clean$AC)
+ames_clean$FirePlace <- factor(ames_clean$FirePlace)
+ames_clean$Bedrooms <- factor(ames_clean$Bedrooms)
+ames_test <- ames_clean
+```
 
 ### Data exploration/visualization for ML
   
 Let's explore data for ML purposes
     
-    ```{r, message=FALSE, echo=FALSE}
-    ames_test %>% keep(is.numeric) %>% gather() %>%
-    ggplot(aes(x=value)) +
-    geom_histogram(fill="steelblue", alpha=.7) +
-    theme_minimal() +
-    facet_wrap(~key, scales="free")
-    
-    cor(ames_test %>% keep(is.double)) %>%
-    as.data.frame %>% mutate(var2=rownames(.)) %>%
-    pivot_longer(!var2, values_to = "value") %>%
-    ggplot(aes(x=name,y=var2,fill=abs(value),label=round(value,2))) +
-    geom_tile() + geom_label() + xlab("") + ylab("") +
-    ggtitle("Correlation matrix of our predictors") +
-    labs(fill="Correlation\n(absolute):")
-    
-    ames_test %>% select_if(is.double) %>%
-    pivot_longer(!`Sale Price`, values_to = "value") %>%
-    ggplot(aes(x=value, y=`Sale Price`)) +
-    geom_point() +
-    theme_minimal() +
-    facet_wrap(~name, scales="free")
-    
-    function_CAT_SalePrice <- function(x){
-      x_CAT_n_1QUANT <- data.frame(matrix(ncol = 0, nrow = dim(x)[1]))
-      x_CAT_n_1QUANT <- cbind(x_CAT_n_1QUANT, x['Sale Price'], select_if(x, is.factor))
-      return (x_CAT_n_1QUANT)
-    }
-    ames_test %>% function_CAT_SalePrice() %>%
-      pivot_longer(!`Sale Price`, values_to = "value") %>%
-      ggplot(aes(x=`Sale Price`, fill=value)) + # can use x=log(`Sale Price`) to make distribution more normal
-      geom_histogram(show.legend = FALSE) +
-      facet_wrap(~name, scales="free")
-    
-    ames_test %>% function_CAT_SalePrice() %>%
-      pivot_longer(!`Sale Price`, values_to = "value") %>%
-      ggplot(aes(y=`Sale Price`, x = value)) +
-      geom_boxplot(show.legend = FALSE) +
-      facet_wrap(~name, scales="free")
-    ```
+```{r, message=FALSE, echo=FALSE}
+ames_test %>% keep(is.numeric) %>% gather() %>%
+ggplot(aes(x=value)) +
+geom_histogram(fill="steelblue", alpha=.7) +
+theme_minimal() +
+facet_wrap(~key, scales="free")
 
-We notice
-    
+cor(ames_test %>% keep(is.double)) %>%
+as.data.frame %>% mutate(var2=rownames(.)) %>%
+pivot_longer(!var2, values_to = "value") %>%
+ggplot(aes(x=name,y=var2,fill=abs(value),label=round(value,2))) +
+geom_tile() + geom_label() + xlab("") + ylab("") +
+ggtitle("Correlation matrix of our predictors") +
+labs(fill="Correlation\n(absolute):")
+
+ames_test %>% select_if(is.double) %>%
+pivot_longer(!`Sale Price`, values_to = "value") %>%
+ggplot(aes(x=value, y=`Sale Price`)) +
+geom_point() +
+theme_minimal() +
+facet_wrap(~name, scales="free")
+
+function_CAT_SalePrice <- function(x){
+  x_CAT_n_1QUANT <- data.frame(matrix(ncol = 0, nrow = dim(x)[1]))
+  x_CAT_n_1QUANT <- cbind(x_CAT_n_1QUANT, x['Sale Price'], select_if(x, is.factor))
+  return (x_CAT_n_1QUANT)
+}
+ames_test %>% function_CAT_SalePrice() %>%
+  pivot_longer(!`Sale Price`, values_to = "value") %>%
+  ggplot(aes(x=`Sale Price`, fill=value)) + # can use x=log(`Sale Price`) to make distribution more normal
+  geom_histogram(show.legend = FALSE) +
+  facet_wrap(~name, scales="free")
+
+ames_test %>% function_CAT_SalePrice() %>%
+  pivot_longer(!`Sale Price`, values_to = "value") %>%
+  ggplot(aes(y=`Sale Price`, x = value)) +
+  geom_boxplot(show.legend = FALSE) +
+  facet_wrap(~name, scales="free")
+```
+
+We notice not much correlations. Also varying behavior based on various factors. So simple linear regression or clustering won't work.
+
 ### Model training
 
-Let's use 
-    
-    ```{r, message=FALSE, echo=FALSE}
-    # machine learning library
-    library(caret)
-    
-    split <- sample(1:nrow(ames_test), as.integer(0.7*nrow(ames_test)), F)
-    
-    train <- ames_test[split, ]
-    test  <- ames_test[-split,]
-    
-    x_train <- train[,names(train) != "Sale Price"]
-    x_test  <- test [,names(test ) != "Sale Price"]
-    
-    y_train <- unlist(train[,"Sale Price"])
-    y_test <- unlist(test[,"Sale Price"])
-    
-    mod <- caret::train(x_train, y_train, method="rf",
-                    tuneGrid = expand.grid(mtry = seq(1,ncol(x_train),by=1)),
-                    trControl = trainControl(method="cv", number=2, verboseIter = T))
-    ```
-    
-model trained
-    
-    ```{r, message=FALSE, echo=FALSE}
-    plot(varImp(mod), main="Feature importance of random forest model on training data")
-    
-    print(mod)
+Let's use Random Forest Regression as decision trees certainly help determine the important features.
 
-    predictions <- predict(mod, newdata = x_test)
-    
-    dff <- cbind(predictions, y_test)
+```{r, message=FALSE, echo=FALSE}
+# machine learning library
+library(caret)
 
-    # predicted vs real plot
-    as.data.frame(dff) %>% ggplot(aes(x = predictions, y = y_test)) + geom_point() + geom_abline(aes(intercept = 0 , slope = 1))
-    ```
+split <- sample(1:nrow(ames_test), as.integer(0.7*nrow(ames_test)), F)
 
-We see our model predicts quite accurately. Will optimize further for finer tuning later.
+train <- ames_test[split, ]
+test  <- ames_test[-split,]
+
+x_train <- train[,names(train) != "Sale Price"]
+x_test  <- test [,names(test ) != "Sale Price"]
+
+y_train <- unlist(train[,"Sale Price"])
+y_test <- unlist(test[,"Sale Price"])
+
+mod <- caret::train(x_train, y_train, method="rf",
+                tuneGrid = expand.grid(mtry = seq(1,ncol(x_train),by=1)),
+                trControl = trainControl(method="cv", number=2, verboseIter = T))
+```
+
+After model is trained, let's see most important features, RMSE and our prediction VS actual plots.
+
+```{r, message=FALSE, echo=FALSE}
+plot(varImp(mod), main="Feature importance of random forest model on training data")
+
+print(mod)
+predictions <- predict(mod, newdata = x_test)
+dff <- cbind(predictions, y_test)
+# predicted vs real plot
+as.data.frame(dff) %>% ggplot(aes(x = predictions, y = y_test)) + geom_point() + geom_abline(aes(intercept = 0 , slope = 1))
+```
+
+
+Most important feature is neighborhood which makes sense.
+
+We see our model predicts quite accurately. Will optimize further for finer tuning later. 

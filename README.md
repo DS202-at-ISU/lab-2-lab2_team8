@@ -385,15 +385,16 @@ expensive to super expensive. This probably means this is a fancy area.
 
 Let’s explore data for ML purposes
 
-    ![](README_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-24-2.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-24-3.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-24-4.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-24-5.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-24-2.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-24-3.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-24-4.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-24-5.png)<!-- -->
 
-We notice
+We notice not much correlations. Also varying behavior based on various
+factors. So simple linear regression or clustering won’t work.
 
 ### Model training
 
-Let’s use
+Let’s use Random Forest Regression as decision trees certainly help
+determine the important features.
 
-    ```
     ## + Fold1: mtry= 1 
     ## - Fold1: mtry= 1 
     ## + Fold1: mtry= 2 
@@ -437,13 +438,12 @@ Let’s use
     ## Aggregating results
     ## Selecting tuning parameters
     ## Fitting mtry = 2 on full training set
-    ```
 
-model trained
+After model is trained, let’s see most important features, RMSE and our
+prediction VS actual plots.
 
-    ![](README_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
 
-    ```
     ## Random Forest 
     ## 
     ## 2164 samples
@@ -455,22 +455,23 @@ model trained
     ## Resampling results across tuning parameters:
     ## 
     ##   mtry  RMSE      Rsquared   MAE     
-    ##    1    74456.03  0.5127769  45507.64
-    ##    2    72923.95  0.5093105  42120.89
-    ##    3    73355.76  0.5033146  42080.73
-    ##    4    73716.99  0.4993198  41996.37
-    ##    5    74236.53  0.4932825  42230.26
-    ##    6    74968.04  0.4847666  42342.72
-    ##    7    74908.84  0.4857841  42391.49
-    ##    8    75496.82  0.4793796  42580.84
-    ##    9    76034.79  0.4740880  42683.18
-    ##   10    76484.01  0.4689018  42831.55
+    ##    1    68793.19  0.6034500  43723.38
+    ##    2    63716.67  0.6257534  39073.08
+    ##    3    63738.58  0.6215806  38852.04
+    ##    4    64300.65  0.6134852  38971.08
+    ##    5    64381.16  0.6118784  39112.07
+    ##    6    64795.40  0.6068127  39314.46
+    ##    7    65311.30  0.6004855  39460.82
+    ##    8    65672.23  0.5960514  39632.83
+    ##    9    65701.10  0.5958810  39777.38
+    ##   10    66049.44  0.5914775  39974.89
     ## 
     ## RMSE was used to select the optimal model using the smallest value.
     ## The final value used for the model was mtry = 2.
-    ```
 
-    ![](README_files/figure-gfm/unnamed-chunk-26-2.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-26-2.png)<!-- -->
+
+Most important feature is neighborhood which makes sense.
 
 We see our model predicts quite accurately. Will optimize further for
 finer tuning later.

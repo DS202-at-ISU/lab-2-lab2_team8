@@ -203,4 +203,3 @@ ames_outliers %>% function_CAT_SalePrice() %>%
   ggplot(aes(y=`Sale Price`, x = value)) +
   geom_boxplot(show.legend = FALSE) +
   facet_wrap(~name, scales="free")
-
