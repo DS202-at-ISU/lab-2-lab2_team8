@@ -93,13 +93,7 @@ README.md ON GITHUB
     ## 10        4
     ## # ℹ 6,925 more rows
 
-    ## Warning: Removed 447 rows containing non-finite values (`stat_count()`).
-
-![](README_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
-
-    ## Warning: Removed 447 rows containing missing values (`geom_point()`).
-
-![](README_files/figure-gfm/unnamed-chunk-3-2.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-3-2.png)<!-- -->
 
 There are a lot of 2-5 bedroom houses
 
@@ -240,10 +234,6 @@ ggplot(ames, aes(x=`Sale Price`)) +
   theme_minimal()
 ```
 
-    ## Warning: Removed 394 rows containing non-finite values (`stat_bin()`).
-
-    ## Warning: Removed 2 rows containing missing values (`geom_bar()`).
-
 ![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
 ``` r
@@ -254,8 +244,6 @@ ggplot(ames, aes(x=`Sale Price`)) +
   theme_minimal()
 ```
 
-    ## Warning: Removed 394 rows containing non-finite values (`stat_density()`).
-
 ![](README_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
 
 ``` r
@@ -265,8 +253,6 @@ ggplot(ames, aes(x=`Sale Price`)) +
   labs(title = "Cumulative Distribution of Sale Prices", x = "Sale Price", y = "Cumulative Frequency") +
   theme_minimal()
 ```
-
-    ## Warning: Removed 394 rows containing non-finite values (`stat_ecdf()`).
 
 ![](README_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
 
@@ -377,10 +363,6 @@ ggplot(ames, aes(x=YearBuilt, y=`Sale Price`)) +
 
     ## `geom_smooth()` using formula = 'y ~ x'
 
-    ## Warning: Removed 447 rows containing non-finite values (`stat_smooth()`).
-
-    ## Warning: Removed 447 rows containing missing values (`geom_point()`).
-
 ![](README_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
 
 ``` r
@@ -396,3 +378,99 @@ places have homes sold for around the same prices, but there’s one
 neighborhood on the right where houses are much more expensive. This
 neighborhood also has houses with a big range of prices, from kind of
 expensive to super expensive. This probably means this is a fancy area.
+
+# MACHINE LEARNING!!!
+
+### Data exploration/visualization for ML
+
+Let’s explore data for ML purposes
+
+    ![](README_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-24-2.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-24-3.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-24-4.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-24-5.png)<!-- -->
+
+We notice
+
+### Model training
+
+Let’s use
+
+    ```
+    ## + Fold1: mtry= 1 
+    ## - Fold1: mtry= 1 
+    ## + Fold1: mtry= 2 
+    ## - Fold1: mtry= 2 
+    ## + Fold1: mtry= 3 
+    ## - Fold1: mtry= 3 
+    ## + Fold1: mtry= 4 
+    ## - Fold1: mtry= 4 
+    ## + Fold1: mtry= 5 
+    ## - Fold1: mtry= 5 
+    ## + Fold1: mtry= 6 
+    ## - Fold1: mtry= 6 
+    ## + Fold1: mtry= 7 
+    ## - Fold1: mtry= 7 
+    ## + Fold1: mtry= 8 
+    ## - Fold1: mtry= 8 
+    ## + Fold1: mtry= 9 
+    ## - Fold1: mtry= 9 
+    ## + Fold1: mtry=10 
+    ## - Fold1: mtry=10 
+    ## + Fold2: mtry= 1 
+    ## - Fold2: mtry= 1 
+    ## + Fold2: mtry= 2 
+    ## - Fold2: mtry= 2 
+    ## + Fold2: mtry= 3 
+    ## - Fold2: mtry= 3 
+    ## + Fold2: mtry= 4 
+    ## - Fold2: mtry= 4 
+    ## + Fold2: mtry= 5 
+    ## - Fold2: mtry= 5 
+    ## + Fold2: mtry= 6 
+    ## - Fold2: mtry= 6 
+    ## + Fold2: mtry= 7 
+    ## - Fold2: mtry= 7 
+    ## + Fold2: mtry= 8 
+    ## - Fold2: mtry= 8 
+    ## + Fold2: mtry= 9 
+    ## - Fold2: mtry= 9 
+    ## + Fold2: mtry=10 
+    ## - Fold2: mtry=10 
+    ## Aggregating results
+    ## Selecting tuning parameters
+    ## Fitting mtry = 2 on full training set
+    ```
+
+model trained
+
+    ![](README_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
+
+    ```
+    ## Random Forest 
+    ## 
+    ## 2164 samples
+    ##   10 predictor
+    ## 
+    ## No pre-processing
+    ## Resampling: Cross-Validated (2 fold) 
+    ## Summary of sample sizes: 1083, 1081 
+    ## Resampling results across tuning parameters:
+    ## 
+    ##   mtry  RMSE      Rsquared   MAE     
+    ##    1    74456.03  0.5127769  45507.64
+    ##    2    72923.95  0.5093105  42120.89
+    ##    3    73355.76  0.5033146  42080.73
+    ##    4    73716.99  0.4993198  41996.37
+    ##    5    74236.53  0.4932825  42230.26
+    ##    6    74968.04  0.4847666  42342.72
+    ##    7    74908.84  0.4857841  42391.49
+    ##    8    75496.82  0.4793796  42580.84
+    ##    9    76034.79  0.4740880  42683.18
+    ##   10    76484.01  0.4689018  42831.55
+    ## 
+    ## RMSE was used to select the optimal model using the smallest value.
+    ## The final value used for the model was mtry = 2.
+    ```
+
+    ![](README_files/figure-gfm/unnamed-chunk-26-2.png)<!-- -->
+
+We see our model predicts quite accurately. Will optimize further for
+finer tuning later.
