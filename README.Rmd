@@ -309,6 +309,22 @@ ames_clean <- filter(ames_clean, `Sale Price` > 100000 & `Sale Price` <= 1000000
 ames_clean$AC <- factor(ames_clean$AC)
 ames_clean$FirePlace <- factor(ames_clean$FirePlace)
 ames_clean$Bedrooms <- factor(ames_clean$Bedrooms)
+ames_clean <- ames_clean %>% mutate(
+  PriceClass = NA,
+  PriceClass = if_else(`Sale Price` > 25000  & `Sale Price` <= 125000,
+                   1, PriceClass),
+  PriceClass = if_else(`Sale Price` > 125000 & `Sale Price` <= 375000,
+                   2, PriceClass),
+  PriceClass = if_else(`Sale Price` > 375000 & `Sale Price` <= 500000,
+                   3, PriceClass),
+  PriceClass = if_else(`Sale Price` > 500000 & `Sale Price` <= 600000,
+                   4, PriceClass),
+  PriceClass = if_else(`Sale Price` > 600000 & `Sale Price` <= 800000,
+                   5, PriceClass),
+  PriceClass = if_else(`Sale Price` > 800000 & `Sale Price` <= 1000000,
+                   6, PriceClass)
+)
+ames_clean$PriceClass <- factor(ames_clean$PriceClass)
 ames_test <- ames_clean
 ```
 
@@ -395,6 +411,6 @@ as.data.frame(dff) %>% ggplot(aes(x = predictions, y = y_test)) + geom_point() +
 ```
 
 
-Most important feature is neighborhood which makes sense.
+Most important feature is price class followed by neighborhood which makes sense.
 
 We see our model predicts quite accurately. Will optimize further for finer tuning later. 

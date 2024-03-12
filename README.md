@@ -415,6 +415,8 @@ determine the important features.
     ## - Fold1: mtry= 9 
     ## + Fold1: mtry=10 
     ## - Fold1: mtry=10 
+    ## + Fold1: mtry=11 
+    ## - Fold1: mtry=11 
     ## + Fold2: mtry= 1 
     ## - Fold2: mtry= 1 
     ## + Fold2: mtry= 2 
@@ -435,9 +437,11 @@ determine the important features.
     ## - Fold2: mtry= 9 
     ## + Fold2: mtry=10 
     ## - Fold2: mtry=10 
+    ## + Fold2: mtry=11 
+    ## - Fold2: mtry=11 
     ## Aggregating results
     ## Selecting tuning parameters
-    ## Fitting mtry = 2 on full training set
+    ## Fitting mtry = 8 on full training set
 
 After model is trained, let’s see most important features, RMSE and our
 prediction VS actual plots.
@@ -447,31 +451,33 @@ prediction VS actual plots.
     ## Random Forest 
     ## 
     ## 2164 samples
-    ##   10 predictor
+    ##   11 predictor
     ## 
     ## No pre-processing
     ## Resampling: Cross-Validated (2 fold) 
-    ## Summary of sample sizes: 1083, 1081 
+    ## Summary of sample sizes: 1082, 1082 
     ## Resampling results across tuning parameters:
     ## 
     ##   mtry  RMSE      Rsquared   MAE     
-    ##    1    68793.19  0.6034500  43723.38
-    ##    2    63716.67  0.6257534  39073.08
-    ##    3    63738.58  0.6215806  38852.04
-    ##    4    64300.65  0.6134852  38971.08
-    ##    5    64381.16  0.6118784  39112.07
-    ##    6    64795.40  0.6068127  39314.46
-    ##    7    65311.30  0.6004855  39460.82
-    ##    8    65672.23  0.5960514  39632.83
-    ##    9    65701.10  0.5958810  39777.38
-    ##   10    66049.44  0.5914775  39974.89
+    ##    1    56018.70  0.7627894  38584.07
+    ##    2    44791.25  0.8224295  31701.84
+    ##    3    41015.38  0.8464294  30021.61
+    ##    4    39018.76  0.8585883  29157.65
+    ##    5    38061.80  0.8637313  28721.30
+    ##    6    37230.19  0.8684138  28236.25
+    ##    7    37078.88  0.8688266  28070.35
+    ##    8    37034.46  0.8686609  28039.95
+    ##    9    37133.23  0.8676598  28065.69
+    ##   10    37212.81  0.8668685  28107.78
+    ##   11    37298.72  0.8661576  28061.89
     ## 
     ## RMSE was used to select the optimal model using the smallest value.
-    ## The final value used for the model was mtry = 2.
+    ## The final value used for the model was mtry = 8.
 
 ![](README_files/figure-gfm/unnamed-chunk-26-2.png)<!-- -->
 
-Most important feature is neighborhood which makes sense.
+Most important feature is price class followed by neighborhood which
+makes sense.
 
 We see our model predicts quite accurately. Will optimize further for
 finer tuning later.

@@ -21,7 +21,7 @@ ames_clean <- subset(ames, select = -c(`Parcel ID`, Address, `Sale Date`, `Multi
 
 # for other NAs, remove only rows having NA cuz not that many
 
-ames_clean <- filter(ames_clean, `Sale Price` > 100000 & `Sale Price` <= 1000000
+ames_clean <- filter(ames_clean, `Sale Price` > 25000 & `Sale Price` <= 1000000
                                  , !is.na(YearBuilt) & YearBuilt > 1850
                                  , !is.na(Acres) & Acres > 0 & Acres < 5
                                  , `TotalLivingArea (sf)` > 25 & `TotalLivingArea (sf)` < 3000
@@ -34,8 +34,25 @@ ames_clean <- filter(ames_clean, `Sale Price` > 100000 & `Sale Price` <= 1000000
 ames_clean$AC <- factor(ames_clean$AC)
 ames_clean$FirePlace <- factor(ames_clean$FirePlace)
 ames_clean$Bedrooms <- factor(ames_clean$Bedrooms)
+# Feature Engineering
+ames_clean <- ames_clean %>% mutate(
+  PriceClass = NA,
+  PriceClass = if_else(`Sale Price` > 25000  & `Sale Price` <= 125000,
+                   1, PriceClass),
+  PriceClass = if_else(`Sale Price` > 125000 & `Sale Price` <= 400000,
+                   2, PriceClass),
+  PriceClass = if_else(`Sale Price` > 400000 & `Sale Price` <= 550000,
+                   3, PriceClass),
+  PriceClass = if_else(`Sale Price` > 550000 & `Sale Price` <= 750000,
+                   4, PriceClass),
+  PriceClass = if_else(`Sale Price` > 750000 & `Sale Price` <= 1000000,
+                   5, PriceClass)
+)
+ames_clean$PriceClass <- factor(ames_clean$PriceClass)
 
 ames_test <- ames_clean
+
+View(ames_test)
 
 #ames_test[sapply(ames_test, is.factor)] <- sapply(ames_test[sapply(ames_test, is.factor)], unclass)
 #ames_test[sapply(ames_test, is.factor)] <- data.matrix(ames_test[sapply(ames_test, is.factor)])
@@ -163,6 +180,10 @@ dff <- cbind(predictions, y_test)
 
 as.data.frame(dff) %>% ggplot(aes(x = predictions, y = y_test)) + geom_point() + geom_abline(aes(intercept = 0 , slope = 1))
 
+
+#--------------------------
+
+
 mean(ames_clean$`Sale Price`)
 median(ames_clean$`Sale Price`)
 ggplot(ames_clean, aes(`Sale Price`)) + geom_histogram(binwidth = 10000)
@@ -175,6 +196,7 @@ as.data.frame(dff) %>% gather() %>%
   facet_wrap(~key, scales="free")
 
 # RNN, RSTM, Transformers, ARIMA for time series forecasting
+# do distance from 45 degree line analysis to get bounds to see patterns of remaining outliers
 
 # outlier analysis
 ames_outliers <- filter(ames, `Sale Price` > 10000 & `Sale Price` < 100000
