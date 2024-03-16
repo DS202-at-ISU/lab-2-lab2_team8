@@ -37,16 +37,18 @@ ames_clean$Bedrooms <- factor(ames_clean$Bedrooms)
 # Feature Engineering
 ames_clean <- ames_clean %>% mutate(
   PriceClass = NA,
-  PriceClass = if_else(`Sale Price` > 25000  & `Sale Price` <= 125000,
+  PriceClass = if_else(`Sale Price` > 23200  & `Sale Price` <= 94300,
                    1, PriceClass),
-  PriceClass = if_else(`Sale Price` > 125000 & `Sale Price` <= 400000,
+  PriceClass = if_else(`Sale Price` > 94300 & `Sale Price` <= 201050,
                    2, PriceClass),
-  PriceClass = if_else(`Sale Price` > 400000 & `Sale Price` <= 550000,
+  PriceClass = if_else(`Sale Price` > 201050 & `Sale Price` <= 383900,
                    3, PriceClass),
-  PriceClass = if_else(`Sale Price` > 550000 & `Sale Price` <= 750000,
+  PriceClass = if_else(`Sale Price` > 383900 & `Sale Price` <= 487450,
                    4, PriceClass),
-  PriceClass = if_else(`Sale Price` > 750000 & `Sale Price` <= 1000000,
-                   5, PriceClass)
+  PriceClass = if_else(`Sale Price` > 487450 & `Sale Price` <= 731200,
+                   5, PriceClass),
+  PriceClass = if_else(`Sale Price` > 731200,
+                   6, PriceClass)
 )
 ames_clean$PriceClass <- factor(ames_clean$PriceClass)
 
